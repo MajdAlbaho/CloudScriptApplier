@@ -4,28 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CloudScriptApplier.Common
+namespace CloudScriptApplier.Common.Services
 {
-    public static class SecurityManager
+    public class SecurityManager : ISecurityManager
     {
-        public static string DecryptString(string encrString)
-        {
+        public string DecryptString(string encrString) {
             byte[] b;
             string decrypted;
-            try
-            {
+            try {
                 b = Convert.FromBase64String(encrString);
                 decrypted = Encoding.ASCII.GetString(b);
             }
-            catch (FormatException)
-            {
+            catch (FormatException) {
                 decrypted = "";
             }
             return decrypted;
         }
 
-        public static string EnryptString(string strEncrypted)
-        {
+        public string EnryptString(string strEncrypted) {
             byte[] b = Encoding.ASCII.GetBytes(strEncrypted);
             string encrypted = Convert.ToBase64String(b);
             return encrypted;

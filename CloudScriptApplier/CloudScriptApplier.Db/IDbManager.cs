@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace CloudScriptApplier.Db
 {
-    internal interface IDbManager
+    public interface IDbManager
     {
-        void RunCommand(string command);
+        void ExecuteScripts(string scriptPath);
         void CreateConnectionString();
-        string GetDbsCodes();
-        void LogResult(string result, string scriptName);
+        List<string> GetDbsCodes();
+        void LogResult(string result, string scriptName,string DbName);
         DbManager.DbConnectionState GetConnectionState();
     }
 }

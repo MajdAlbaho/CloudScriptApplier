@@ -82,7 +82,7 @@ namespace CloudScriptApplier.Db.ServerDb
 		
 		private int _Id;
 		
-		private string _DbCode;
+		private string _DbName;
 		
 		private string _Result;
 		
@@ -96,8 +96,8 @@ namespace CloudScriptApplier.Db.ServerDb
     partial void OnCreated();
     partial void OnIdChanging(int value);
     partial void OnIdChanged();
-    partial void OnDbCodeChanging(string value);
-    partial void OnDbCodeChanged();
+    partial void OnDbNameChanging(string value);
+    partial void OnDbNameChanged();
     partial void OnResultChanging(string value);
     partial void OnResultChanged();
     partial void OnScriptNameChanging(string value);
@@ -111,7 +111,7 @@ namespace CloudScriptApplier.Db.ServerDb
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int Id
 		{
 			get
@@ -131,22 +131,22 @@ namespace CloudScriptApplier.Db.ServerDb
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DbCode", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string DbCode
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DbName", DbType="NVarChar(MAX)")]
+		public string DbName
 		{
 			get
 			{
-				return this._DbCode;
+				return this._DbName;
 			}
 			set
 			{
-				if ((this._DbCode != value))
+				if ((this._DbName != value))
 				{
-					this.OnDbCodeChanging(value);
+					this.OnDbNameChanging(value);
 					this.SendPropertyChanging();
-					this._DbCode = value;
-					this.SendPropertyChanged("DbCode");
-					this.OnDbCodeChanged();
+					this._DbName = value;
+					this.SendPropertyChanged("DbName");
+					this.OnDbNameChanged();
 				}
 			}
 		}
@@ -171,7 +171,7 @@ namespace CloudScriptApplier.Db.ServerDb
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ScriptName", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ScriptName", DbType="NVarChar(MAX)")]
 		public string ScriptName
 		{
 			get
