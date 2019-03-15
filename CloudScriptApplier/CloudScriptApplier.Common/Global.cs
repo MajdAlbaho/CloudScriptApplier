@@ -8,6 +8,6 @@ namespace CloudScriptApplier.Common
 {
     public static class Global
     {
-        public static readonly string TargetPath = Environment.SpecialFolder.MyDocuments.ToString();
+        public static readonly string TargetPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
     }
 }

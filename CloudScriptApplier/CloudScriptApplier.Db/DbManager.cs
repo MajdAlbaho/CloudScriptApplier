@@ -8,23 +8,26 @@ using System.Threading.Tasks;
 using CloudScriptApplier.Common;
 using CloudScriptApplier.Common.Services;
 using CloudScriptApplier.Db.ClientDb;
+using CloudScriptApplier.Db.Logger;
 using CloudScriptApplier.Db.ServerDb;
 using Microsoft.Win32;
 
-namespace CloudScriptApplier.Db {
-    public class DbManager : ClientDbDataContext, IDbManager {
+namespace CloudScriptApplier.Db
+{
+    public class DbManager : ClientDbDataContext, IDbManager
+    {
         private readonly ISecurityManager _securityManager;
         private readonly IScriptManager _scriptManager;
+        private readonly ILoggerService _loggerService;
 
         public DbManager(ISecurityManager securityManager,
-                    IScriptManager scriptManager)
-        {
+                    IScriptManager scriptManager, ILoggerService loggerService) {
             _securityManager = securityManager;
             _scriptManager = scriptManager;
+            _loggerService = loggerService;
         }
 
-        public void Initialize()
-        {
+        public void Initialize() {
             CreateConnectionString();
             Connection.ConnectionString = ConnectionString;
         }
@@ -43,17 +46,18 @@ namespace CloudScriptApplier.Db {
                 var encryptedConnection = File.ReadAllText(path);
                 ConnectionString = _securityManager.DecryptString(encryptedConnection);
                 return;
-            } else {
-                if (ReadFromRegistry()) {
-                    var con = File.Create(path);
+            }
 
-                    using (var writer = new StreamWriter(con)) {
-                        var encrypted = _securityManager.EnryptString(ConnectionString);
-                        writer.Write(encrypted);
-                    }
-                } else {
-                    LogResult($"Failed to create connection string at {Environment.MachineName}", "", "");
+            if (ReadFromRegistry()) {
+                var con = File.Create(path);
+
+                using (var writer = new StreamWriter(con)) {
+                    var encrypted = _securityManager.EnryptString(ConnectionString);
+                    writer.Write(encrypted);
                 }
+            } else {
+                _loggerService.Log($"Failed to create connection string at {Environment.MachineName}",
+                    "", Environment.MachineName);
             }
         }
 
@@ -80,12 +84,21 @@ namespace CloudScriptApplier.Db {
             return _invalidConnectionString ? DbConnectionState.Invalid : DbConnectionState.Valid;
         }
 
-        public void ExecuteScripts(string scriptsPath)
-        {
+        public void ExecuteScripts(string scriptsPath) {
             var files = Directory.GetFiles(scriptsPath);
-            foreach (var file in files)
-            {
-                ((DataContext)this).ExecuteCommand(_scriptManager.ReadCommands(file));
+
+            foreach (var file in files) {
+                Execute(_scriptManager.ReadCommands(file));
+                _scriptManager.DeleteFile(file);
+            }
+        }
+
+        private void Execute(string command) {
+            try {
+                ExecuteCommand(command);
+            }
+            catch (Exception e) {
+                _loggerService.Log(e.Message, "", Environment.MachineName, command);
             }
         }
 
@@ -94,20 +107,8 @@ namespace CloudScriptApplier.Db {
                     .Where(DbName => DbName.Contains(".")).ToList();
         }
 
-        public void LogResult(string result, string scriptName = null,string dbName = null) {
-            using (var db = new ServerDbDataContext()) {
-                db.Logs.InsertOnSubmit(new Log() {
-                    DbName = dbName,
-                    Result = result,
-                    ScriptName = scriptName,
-                    ServerName = Environment.MachineName
-                });
-
-                db.SubmitChanges();
-            }
-        }
-
-        public enum DbConnectionState {
+        public enum DbConnectionState
+        {
             Valid, Invalid
         }
 

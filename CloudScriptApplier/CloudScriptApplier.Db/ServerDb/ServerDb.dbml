@@ -3,9 +3,8 @@
   <Table Name="dbo.Logs" Member="Logs">
     <Type Name="Log">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="DbName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="Result" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="ScriptName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Script" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="ServerName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>

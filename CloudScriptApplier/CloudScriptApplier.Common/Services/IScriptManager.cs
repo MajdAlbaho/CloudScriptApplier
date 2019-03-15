@@ -9,5 +9,6 @@ namespace CloudScriptApplier.Common.Services
     public interface IScriptManager
     {
         string ReadCommands(string scriptFile);
+        bool DeleteFile(string scriptPath);
     }
 }

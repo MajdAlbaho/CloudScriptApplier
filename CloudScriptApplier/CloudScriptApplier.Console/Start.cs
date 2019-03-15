@@ -1,6 +1,7 @@
 ﻿using CloudScriptApplier.MegaCloud;
 using System;
 using System.IO;
+using System.Linq;
 using CloudScriptApplier.Common;
 using CloudScriptApplier.Common.Services;
 using CloudScriptApplier.Db;
@@ -25,20 +26,19 @@ namespace CloudScriptApplier.Console
                 if (_internetConnectionManager.IsValidConnection()) {
                     var dbNames = _dbManager.GetDbsCodes();
                     foreach (var dbName in dbNames) {
-                        var cloudFiles = _megaClientManager.GetFolderFilesByDbName(dbName);
+                        var cloudFiles = _megaClientManager.GetFolderFilesByDbName(dbName).ToList();
                         foreach (var cloudFile in cloudFiles) {
                             string scriptPath = Path.Combine(Global.TargetPath, dbName,
                                     cloudFile.Name);
 
-                            if (!File.Exists(scriptPath))
-                            {
+                            if (!File.Exists(scriptPath)) {
                                 Directory.CreateDirectory(Path.Combine(Global.TargetPath, dbName));
                                 _megaClientManager.Download(cloudFile, scriptPath);
                             }
                         }
-
-                        _dbManager.ExecuteScripts(Path.Combine(Global.TargetPath, dbName));
-
+                        if (cloudFiles.Any()) {
+                            _dbManager.ExecuteScripts(Path.Combine(Global.TargetPath, dbName));
+                        }
                     }
                 }
             }

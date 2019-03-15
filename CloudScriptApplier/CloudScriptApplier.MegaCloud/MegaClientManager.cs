@@ -26,9 +26,19 @@ namespace CloudScriptApplier.MegaCloud
             _client.Login("ScriptApplier@gmail.com", "P@ssw0rd@123");
         }
 
-        public void Download(INode file, string targetPath) => GetInstance().DownloadFile(file, targetPath);
+        public void Download(INode file, string targetPath) {
+            GetInstance().DownloadFile(file, targetPath);
+            GetInstance().Delete(file);
+        }
 
-        public void DeleteFile(INode file) => GetInstance().Delete(file);
+        public bool DeleteFile(INode file) {
+            if (file != null) {
+                GetInstance().Delete(file);
+                return true;
+            }
+
+            return false;
+        }
 
         public IEnumerable<INode> GetFolderFilesByDbName(string facilityCode) {
             var client = GetInstance();

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CloudScriptApplier.Common.Services;
 using CloudScriptApplier.Db;
+using CloudScriptApplier.Db.Logger;
 using CloudScriptApplier.MegaCloud;
 using Ninject;
 using Ninject.Modules;
@@ -18,11 +19,13 @@ namespace CloudScriptApplier.Console.Unity
             Bind<IInternetConnectionManager>().To<InternetConnectionManager>();
             Bind<ISecurityManager>().To<SecurityManager>();
             Bind<IScriptManager>().To<ScriptManager>();
+            Bind<ILoggerService>().To<LoggerService>();
 
-            Bind<IDbManager>().ToConstant((Kernel ?? 
-                throw new NullReferenceException("Kernal is null check your load method"))
-                .Get<DbManager>());
-            
+            var dbManagerInstance = Kernel.Get<DbManager>();
+            dbManagerInstance.Initialize();
+
+            Bind<IDbManager>().ToConstant(dbManagerInstance);
+
         }
     }
 }

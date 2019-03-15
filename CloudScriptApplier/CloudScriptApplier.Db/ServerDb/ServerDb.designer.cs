@@ -82,11 +82,9 @@ namespace CloudScriptApplier.Db.ServerDb
 		
 		private int _Id;
 		
-		private string _DbName;
-		
 		private string _Result;
 		
-		private string _ScriptName;
+		private string _Script;
 		
 		private string _ServerName;
 		
@@ -96,12 +94,10 @@ namespace CloudScriptApplier.Db.ServerDb
     partial void OnCreated();
     partial void OnIdChanging(int value);
     partial void OnIdChanged();
-    partial void OnDbNameChanging(string value);
-    partial void OnDbNameChanged();
     partial void OnResultChanging(string value);
     partial void OnResultChanged();
-    partial void OnScriptNameChanging(string value);
-    partial void OnScriptNameChanged();
+    partial void OnScriptChanging(string value);
+    partial void OnScriptChanged();
     partial void OnServerNameChanging(string value);
     partial void OnServerNameChanged();
     #endregion
@@ -131,26 +127,6 @@ namespace CloudScriptApplier.Db.ServerDb
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DbName", DbType="NVarChar(MAX)")]
-		public string DbName
-		{
-			get
-			{
-				return this._DbName;
-			}
-			set
-			{
-				if ((this._DbName != value))
-				{
-					this.OnDbNameChanging(value);
-					this.SendPropertyChanging();
-					this._DbName = value;
-					this.SendPropertyChanged("DbName");
-					this.OnDbNameChanged();
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Result", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
 		public string Result
 		{
@@ -171,22 +147,22 @@ namespace CloudScriptApplier.Db.ServerDb
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ScriptName", DbType="NVarChar(MAX)")]
-		public string ScriptName
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Script", DbType="NVarChar(MAX)")]
+		public string Script
 		{
 			get
 			{
-				return this._ScriptName;
+				return this._Script;
 			}
 			set
 			{
-				if ((this._ScriptName != value))
+				if ((this._Script != value))
 				{
-					this.OnScriptNameChanging(value);
+					this.OnScriptChanging(value);
 					this.SendPropertyChanging();
-					this._ScriptName = value;
-					this.SendPropertyChanged("ScriptName");
-					this.OnScriptNameChanged();
+					this._Script = value;
+					this.SendPropertyChanged("Script");
+					this.OnScriptChanged();
 				}
 			}
 		}

@@ -50,5 +50,11 @@
     <Compile Include="Services\ScriptManager.cs" />
     <Compile Include="Services\SecurityManager.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CloudScriptApplier.MegaCloud\CloudScriptApplier.MegaCloud.csproj">
+      <Project>{F2AF8B66-5E26-4CCB-ABEE-8EF45229668C}</Project>
+      <Name>CloudScriptApplier.MegaCloud</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

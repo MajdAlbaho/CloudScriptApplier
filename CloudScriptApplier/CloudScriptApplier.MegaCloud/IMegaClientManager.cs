@@ -10,7 +10,7 @@ namespace CloudScriptApplier.MegaCloud
     public interface IMegaClientManager
     {
         void Download(INode file, string targetPath);
-        void DeleteFile(INode file);
+        bool DeleteFile(INode file);
         IEnumerable<INode> GetFolderFilesByDbName(string facilityCode);
     }
 }
