@@ -60,7 +60,8 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Start.cs" />
+    <Compile Include="StartMegaTarget.cs" />
+    <Compile Include="StartServerTarget.cs" />
     <Compile Include="Unity\BootStrap.cs" />
   </ItemGroup>
   <ItemGroup>

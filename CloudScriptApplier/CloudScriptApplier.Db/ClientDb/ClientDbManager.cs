@@ -1,7 +1,9 @@
-﻿using CloudScriptApplier.Common.Services;
+﻿using CloudScriptApplier.Common.Models;
+using CloudScriptApplier.Common.Services;
 using CloudScriptApplier.Db.ServerDb;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 
@@ -24,7 +26,18 @@ namespace CloudScriptApplier.Db.ClientDb
         }
 
         public void Initialize() {
-            SetConnectionString();
+            //Connection.ConnectionString =
+            //    _connectionStringManager.CreateDynamicConnectionString();
+
+            Connection.ConnectionString =
+                _connectionStringManager.CreateStaticConnectionString("Home-PC", "HIS.Dev", "sa", "P@ssw0rd@123");
+        }
+
+        public void ExecuteScripts(List<Scripts> scripts) {
+            foreach (var script in scripts) {
+                Execute(script.ScriptText);
+                _serverDbManager.Delete(script);
+            }
         }
 
         public void ExecuteScripts(string scriptsPath) {
@@ -41,19 +54,22 @@ namespace CloudScriptApplier.Db.ClientDb
                 ExecuteCommand(command);
             }
             catch (Exception e) {
-                // TODO: Get db name
-                _serverDbManager.Log(e.Message, logHistoryType.Error, command, Environment.MachineName, "");
+                _serverDbManager.LogMessage(e.Message, logHistoryType.Error, command,
+                    Environment.MachineName,
+                    GetCurrentDbName());
             }
         }
 
-        public List<string> GetDbsCodes() {
+        public List<string> GetDbsNames() {
             return ExecuteQuery<string>("SELECT name FROM sys.databases")
                     .Where(DbName => DbName.Contains(".")).ToList();
         }
 
-        public void SetConnectionString() {
-            Connection.ConnectionString =
-                _connectionStringManager.CreateDynamicConnectionString();
+        public string GetCurrentDbName() {
+            SqlConnectionStringBuilder connection =
+                new SqlConnectionStringBuilder(Connection.ConnectionString);
+
+            return connection.InitialCatalog;
         }
     }
 }

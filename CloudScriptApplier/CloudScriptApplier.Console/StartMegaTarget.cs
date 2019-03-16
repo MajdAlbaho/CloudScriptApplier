@@ -9,26 +9,29 @@ using System.Linq;
 
 namespace CloudScriptApplier.Console
 {
-    public class Start
+    public class StartMegaTarget
     {
         private readonly IInternetConnectionManager _internetConnectionManager;
         private readonly IMegaClientManager _megaClientManager;
         private readonly IClientDbManager _clientDbManager;
         private readonly IServerDbManager _serverDbManager;
+        private readonly IConnectionStringManager _connectionStringManager;
 
-        public Start(IInternetConnectionManager internetConnectionManager,
+        public StartMegaTarget(IInternetConnectionManager internetConnectionManager,
                 IMegaClientManager megaClientManager, IClientDbManager clientDbManager,
-                IServerDbManager serverDbManager) {
+                IServerDbManager serverDbManager, IConnectionStringManager connectionStringManager) {
             _internetConnectionManager = internetConnectionManager;
             _megaClientManager = megaClientManager;
             _clientDbManager = clientDbManager;
             _serverDbManager = serverDbManager;
+            _connectionStringManager = connectionStringManager;
         }
 
         public void Initialize() {
             try {
                 if (_internetConnectionManager.IsValidConnection()) {
-                    var dbNames = _clientDbManager.GetDbsCodes();
+                    var dbNames = _clientDbManager.GetDbsNames();
+
                     foreach (var dbName in dbNames) {
                         var cloudFiles = _megaClientManager.GetFolderFilesByDbName(dbName).ToList();
                         foreach (var cloudFile in cloudFiles) {
@@ -44,8 +47,8 @@ namespace CloudScriptApplier.Console
                 }
             }
             catch (Exception e) {
-                // TODO: Get command and Db name
-                _serverDbManager.Log(e.Message, logHistoryType.Error, "", Environment.MachineName, "");
+                _serverDbManager.LogMessage(e.Message, logHistoryType.Error, "No data for script",
+                    Environment.MachineName, _clientDbManager.GetCurrentDbName());
             }
         }
 

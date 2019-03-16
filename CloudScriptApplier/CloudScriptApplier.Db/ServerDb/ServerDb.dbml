@@ -1,11 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ScriptApplierLog" Class="ServerDbDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=home-pc;Initial Catalog=ScriptApplierLog;User ID=sa" SettingsObjectName="CloudScriptApplier.Db.Properties.Settings" SettingsPropertyName="ScriptApplierLogConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.LogHistoryType" Member="LogHistoryTypes">
-    <Type Name="LogHistoryType">
+  <Table Name="dbo.Databases" Member="Databases">
+    <Type Name="Database">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="EnName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="ArName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Association Name="LogHistoryType_LogHistory" Member="LogHistories" ThisKey="Id" OtherKey="LogHistoryTypeId" Type="LogHistory" />
+      <Column Name="DatabaseName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="DatabaseTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DatabaseCode" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Database_Script" Member="Scripts" ThisKey="Id" OtherKey="DatabaseId" Type="Script" />
+      <Association Name="DatabasesType_Database" Member="DatabasesType" ThisKey="DatabaseTypeId" OtherKey="Id" Type="DatabasesType" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Scripts" Member="Scripts">
+    <Type Name="Script">
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ScriptText" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="DatabaseId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Database_Script" Member="Database" ThisKey="DatabaseId" OtherKey="Id" Type="Database" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DatabasesType" Member="DatabasesTypes">
+    <Type Name="DatabasesType">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TypeName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="DatabasesType_Database" Member="Databases" ThisKey="Id" OtherKey="DatabaseTypeId" Type="Database" />
     </Type>
   </Table>
   <Table Name="dbo.LogHistory" Member="LogHistories">
@@ -17,6 +35,14 @@
       <Column Name="ServerName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
       <Column Name="DbName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
       <Association Name="LogHistoryType_LogHistory" Member="LogHistoryType" ThisKey="LogHistoryTypeId" OtherKey="Id" Type="LogHistoryType" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LogHistoryType" Member="LogHistoryTypes">
+    <Type Name="LogHistoryType">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="EnName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ArName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="LogHistoryType_LogHistory" Member="LogHistories" ThisKey="Id" OtherKey="LogHistoryTypeId" Type="LogHistory" />
     </Type>
   </Table>
 </Database>

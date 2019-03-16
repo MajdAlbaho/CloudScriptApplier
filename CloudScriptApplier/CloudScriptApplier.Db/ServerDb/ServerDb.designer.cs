@@ -30,12 +30,21 @@ namespace CloudScriptApplier.Db.ServerDb
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertLogHistoryType(LogHistoryType instance);
-    partial void UpdateLogHistoryType(LogHistoryType instance);
-    partial void DeleteLogHistoryType(LogHistoryType instance);
+    partial void InsertDatabase(Database instance);
+    partial void UpdateDatabase(Database instance);
+    partial void DeleteDatabase(Database instance);
+    partial void InsertScript(Script instance);
+    partial void UpdateScript(Script instance);
+    partial void DeleteScript(Script instance);
+    partial void InsertDatabasesType(DatabasesType instance);
+    partial void UpdateDatabasesType(DatabasesType instance);
+    partial void DeleteDatabasesType(DatabasesType instance);
     partial void InsertLogHistory(LogHistory instance);
     partial void UpdateLogHistory(LogHistory instance);
     partial void DeleteLogHistory(LogHistory instance);
+    partial void InsertLogHistoryType(LogHistoryType instance);
+    partial void UpdateLogHistoryType(LogHistoryType instance);
+    partial void DeleteLogHistoryType(LogHistoryType instance);
     #endregion
 		
 		public ServerDbDataContext() : 
@@ -68,11 +77,27 @@ namespace CloudScriptApplier.Db.ServerDb
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<LogHistoryType> LogHistoryTypes
+		public System.Data.Linq.Table<Database> Databases
 		{
 			get
 			{
-				return this.GetTable<LogHistoryType>();
+				return this.GetTable<Database>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Script> Scripts
+		{
+			get
+			{
+				return this.GetTable<Script>();
+			}
+		}
+		
+		public System.Data.Linq.Table<DatabasesType> DatabasesTypes
+		{
+			get
+			{
+				return this.GetTable<DatabasesType>();
 			}
 		}
 		
@@ -83,21 +108,33 @@ namespace CloudScriptApplier.Db.ServerDb
 				return this.GetTable<LogHistory>();
 			}
 		}
+		
+		public System.Data.Linq.Table<LogHistoryType> LogHistoryTypes
+		{
+			get
+			{
+				return this.GetTable<LogHistoryType>();
+			}
+		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.LogHistoryType")]
-	public partial class LogHistoryType : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Databases")]
+	public partial class Database : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
 		private int _Id;
 		
-		private string _EnName;
+		private string _DatabaseName;
 		
-		private string _ArName;
+		private int _DatabaseTypeId;
 		
-		private EntitySet<LogHistory> _LogHistories;
+		private string _DatabaseCode;
+		
+		private EntitySet<Script> _Scripts;
+		
+		private EntityRef<DatabasesType> _DatabasesType;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -105,15 +142,18 @@ namespace CloudScriptApplier.Db.ServerDb
     partial void OnCreated();
     partial void OnIdChanging(int value);
     partial void OnIdChanged();
-    partial void OnEnNameChanging(string value);
-    partial void OnEnNameChanged();
-    partial void OnArNameChanging(string value);
-    partial void OnArNameChanged();
+    partial void OnDatabaseNameChanging(string value);
+    partial void OnDatabaseNameChanged();
+    partial void OnDatabaseTypeIdChanging(int value);
+    partial void OnDatabaseTypeIdChanged();
+    partial void OnDatabaseCodeChanging(string value);
+    partial void OnDatabaseCodeChanged();
     #endregion
 		
-		public LogHistoryType()
+		public Database()
 		{
-			this._LogHistories = new EntitySet<LogHistory>(new Action<LogHistory>(this.attach_LogHistories), new Action<LogHistory>(this.detach_LogHistories));
+			this._Scripts = new EntitySet<Script>(new Action<Script>(this.attach_Scripts), new Action<Script>(this.detach_Scripts));
+			this._DatabasesType = default(EntityRef<DatabasesType>);
 			OnCreated();
 		}
 		
@@ -137,56 +177,114 @@ namespace CloudScriptApplier.Db.ServerDb
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EnName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
-		public string EnName
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DatabaseName", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
+		public string DatabaseName
 		{
 			get
 			{
-				return this._EnName;
+				return this._DatabaseName;
 			}
 			set
 			{
-				if ((this._EnName != value))
+				if ((this._DatabaseName != value))
 				{
-					this.OnEnNameChanging(value);
+					this.OnDatabaseNameChanging(value);
 					this.SendPropertyChanging();
-					this._EnName = value;
-					this.SendPropertyChanged("EnName");
-					this.OnEnNameChanged();
+					this._DatabaseName = value;
+					this.SendPropertyChanged("DatabaseName");
+					this.OnDatabaseNameChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ArName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
-		public string ArName
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DatabaseTypeId", DbType="Int NOT NULL")]
+		public int DatabaseTypeId
 		{
 			get
 			{
-				return this._ArName;
+				return this._DatabaseTypeId;
 			}
 			set
 			{
-				if ((this._ArName != value))
+				if ((this._DatabaseTypeId != value))
 				{
-					this.OnArNameChanging(value);
+					if (this._DatabasesType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnDatabaseTypeIdChanging(value);
 					this.SendPropertyChanging();
-					this._ArName = value;
-					this.SendPropertyChanged("ArName");
-					this.OnArNameChanged();
+					this._DatabaseTypeId = value;
+					this.SendPropertyChanged("DatabaseTypeId");
+					this.OnDatabaseTypeIdChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LogHistoryType_LogHistory", Storage="_LogHistories", ThisKey="Id", OtherKey="LogHistoryTypeId")]
-		public EntitySet<LogHistory> LogHistories
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DatabaseCode", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string DatabaseCode
 		{
 			get
 			{
-				return this._LogHistories;
+				return this._DatabaseCode;
 			}
 			set
 			{
-				this._LogHistories.Assign(value);
+				if ((this._DatabaseCode != value))
+				{
+					this.OnDatabaseCodeChanging(value);
+					this.SendPropertyChanging();
+					this._DatabaseCode = value;
+					this.SendPropertyChanged("DatabaseCode");
+					this.OnDatabaseCodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Database_Script", Storage="_Scripts", ThisKey="Id", OtherKey="DatabaseId")]
+		public EntitySet<Script> Scripts
+		{
+			get
+			{
+				return this._Scripts;
+			}
+			set
+			{
+				this._Scripts.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="DatabasesType_Database", Storage="_DatabasesType", ThisKey="DatabaseTypeId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public DatabasesType DatabasesType
+		{
+			get
+			{
+				return this._DatabasesType.Entity;
+			}
+			set
+			{
+				DatabasesType previousValue = this._DatabasesType.Entity;
+				if (((previousValue != value) 
+							|| (this._DatabasesType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._DatabasesType.Entity = null;
+						previousValue.Databases.Remove(this);
+					}
+					this._DatabasesType.Entity = value;
+					if ((value != null))
+					{
+						value.Databases.Add(this);
+						this._DatabaseTypeId = value.Id;
+					}
+					else
+					{
+						this._DatabaseTypeId = default(int);
+					}
+					this.SendPropertyChanged("DatabasesType");
+				}
 			}
 		}
 		
@@ -210,16 +308,305 @@ namespace CloudScriptApplier.Db.ServerDb
 			}
 		}
 		
-		private void attach_LogHistories(LogHistory entity)
+		private void attach_Scripts(Script entity)
 		{
 			this.SendPropertyChanging();
-			entity.LogHistoryType = this;
+			entity.Database = this;
 		}
 		
-		private void detach_LogHistories(LogHistory entity)
+		private void detach_Scripts(Script entity)
 		{
 			this.SendPropertyChanging();
-			entity.LogHistoryType = null;
+			entity.Database = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Scripts")]
+	public partial class Script : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _Id;
+		
+		private string _ScriptText;
+		
+		private int _DatabaseId;
+		
+		private System.DateTime _CreatedDate;
+		
+		private EntityRef<Database> _Database;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(System.Guid value);
+    partial void OnIdChanged();
+    partial void OnScriptTextChanging(string value);
+    partial void OnScriptTextChanged();
+    partial void OnDatabaseIdChanging(int value);
+    partial void OnDatabaseIdChanged();
+    partial void OnCreatedDateChanging(System.DateTime value);
+    partial void OnCreatedDateChanged();
+    #endregion
+		
+		public Script()
+		{
+			this._Database = default(EntityRef<Database>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true, IsDbGenerated=true)]
+		public System.Guid Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ScriptText", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string ScriptText
+		{
+			get
+			{
+				return this._ScriptText;
+			}
+			set
+			{
+				if ((this._ScriptText != value))
+				{
+					this.OnScriptTextChanging(value);
+					this.SendPropertyChanging();
+					this._ScriptText = value;
+					this.SendPropertyChanged("ScriptText");
+					this.OnScriptTextChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DatabaseId", DbType="Int NOT NULL")]
+		public int DatabaseId
+		{
+			get
+			{
+				return this._DatabaseId;
+			}
+			set
+			{
+				if ((this._DatabaseId != value))
+				{
+					if (this._Database.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnDatabaseIdChanging(value);
+					this.SendPropertyChanging();
+					this._DatabaseId = value;
+					this.SendPropertyChanged("DatabaseId");
+					this.OnDatabaseIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedDate", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedDate
+		{
+			get
+			{
+				return this._CreatedDate;
+			}
+			set
+			{
+				if ((this._CreatedDate != value))
+				{
+					this.OnCreatedDateChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedDate = value;
+					this.SendPropertyChanged("CreatedDate");
+					this.OnCreatedDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Database_Script", Storage="_Database", ThisKey="DatabaseId", OtherKey="Id", IsForeignKey=true)]
+		public Database Database
+		{
+			get
+			{
+				return this._Database.Entity;
+			}
+			set
+			{
+				Database previousValue = this._Database.Entity;
+				if (((previousValue != value) 
+							|| (this._Database.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Database.Entity = null;
+						previousValue.Scripts.Remove(this);
+					}
+					this._Database.Entity = value;
+					if ((value != null))
+					{
+						value.Scripts.Add(this);
+						this._DatabaseId = value.Id;
+					}
+					else
+					{
+						this._DatabaseId = default(int);
+					}
+					this.SendPropertyChanged("Database");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.DatabasesType")]
+	public partial class DatabasesType : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _TypeName;
+		
+		private EntitySet<Database> _Databases;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnTypeNameChanging(string value);
+    partial void OnTypeNameChanged();
+    #endregion
+		
+		public DatabasesType()
+		{
+			this._Databases = new EntitySet<Database>(new Action<Database>(this.attach_Databases), new Action<Database>(this.detach_Databases));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string TypeName
+		{
+			get
+			{
+				return this._TypeName;
+			}
+			set
+			{
+				if ((this._TypeName != value))
+				{
+					this.OnTypeNameChanging(value);
+					this.SendPropertyChanging();
+					this._TypeName = value;
+					this.SendPropertyChanged("TypeName");
+					this.OnTypeNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="DatabasesType_Database", Storage="_Databases", ThisKey="Id", OtherKey="DatabaseTypeId")]
+		public EntitySet<Database> Databases
+		{
+			get
+			{
+				return this._Databases;
+			}
+			set
+			{
+				this._Databases.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Databases(Database entity)
+		{
+			this.SendPropertyChanging();
+			entity.DatabasesType = this;
+		}
+		
+		private void detach_Databases(Database entity)
+		{
+			this.SendPropertyChanging();
+			entity.DatabasesType = null;
 		}
 	}
 	
@@ -443,6 +830,144 @@ namespace CloudScriptApplier.Db.ServerDb
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.LogHistoryType")]
+	public partial class LogHistoryType : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _EnName;
+		
+		private string _ArName;
+		
+		private EntitySet<LogHistory> _LogHistories;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnEnNameChanging(string value);
+    partial void OnEnNameChanged();
+    partial void OnArNameChanging(string value);
+    partial void OnArNameChanged();
+    #endregion
+		
+		public LogHistoryType()
+		{
+			this._LogHistories = new EntitySet<LogHistory>(new Action<LogHistory>(this.attach_LogHistories), new Action<LogHistory>(this.detach_LogHistories));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EnName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string EnName
+		{
+			get
+			{
+				return this._EnName;
+			}
+			set
+			{
+				if ((this._EnName != value))
+				{
+					this.OnEnNameChanging(value);
+					this.SendPropertyChanging();
+					this._EnName = value;
+					this.SendPropertyChanged("EnName");
+					this.OnEnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ArName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string ArName
+		{
+			get
+			{
+				return this._ArName;
+			}
+			set
+			{
+				if ((this._ArName != value))
+				{
+					this.OnArNameChanging(value);
+					this.SendPropertyChanging();
+					this._ArName = value;
+					this.SendPropertyChanged("ArName");
+					this.OnArNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LogHistoryType_LogHistory", Storage="_LogHistories", ThisKey="Id", OtherKey="LogHistoryTypeId")]
+		public EntitySet<LogHistory> LogHistories
+		{
+			get
+			{
+				return this._LogHistories;
+			}
+			set
+			{
+				this._LogHistories.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_LogHistories(LogHistory entity)
+		{
+			this.SendPropertyChanging();
+			entity.LogHistoryType = this;
+		}
+		
+		private void detach_LogHistories(LogHistory entity)
+		{
+			this.SendPropertyChanging();
+			entity.LogHistoryType = null;
 		}
 	}
 }
