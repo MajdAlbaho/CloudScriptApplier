@@ -11,7 +11,7 @@ namespace CloudScriptApplier.Db.ClientDb
     {
         void ExecuteScripts(string scriptPath);
         List<string> GetDbsNames();
-        void ExecuteScripts(List<Scripts> scripts);
+        List<ExecuteResult> ExecuteScripts(List<Scripts> scripts);
         string GetCurrentDbName();
     }
 }

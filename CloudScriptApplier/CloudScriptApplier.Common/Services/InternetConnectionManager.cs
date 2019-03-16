@@ -10,6 +10,10 @@ namespace CloudScriptApplier.Common.Services
     public class InternetConnectionManager : IInternetConnectionManager
     {
         public bool IsValidConnection(string site = "www.google.com") {
+#if DEBUG
+            return true;
+#endif
+
             Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             return socket.BeginConnect(site, 80, null, null)

@@ -61,41 +61,6 @@ namespace CloudScriptApplier.Db.ClientDb
 		{
 			OnCreated();
 		}
-		
-		public System.Data.Linq.Table<GetDbName> GetDbNames
-		{
-			get
-			{
-				return this.GetTable<GetDbName>();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.GetDbNames")]
-	public partial class GetDbName
-	{
-		
-		private string _name;
-		
-		public GetDbName()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
-		public string name
-		{
-			get
-			{
-				return this._name;
-			}
-			set
-			{
-				if ((this._name != value))
-				{
-					this._name = value;
-				}
-			}
-		}
 	}
 }
 #pragma warning restore 1591

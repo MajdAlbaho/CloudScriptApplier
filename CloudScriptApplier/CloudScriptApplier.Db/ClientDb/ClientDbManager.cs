@@ -33,11 +33,22 @@ namespace CloudScriptApplier.Db.ClientDb
                 _connectionStringManager.CreateStaticConnectionString("Home-PC", "HIS.Dev", "sa", "P@ssw0rd@123");
         }
 
-        public void ExecuteScripts(List<Scripts> scripts) {
+        public List<ExecuteResult> ExecuteScripts(List<Scripts> scripts) {
+            if (scripts == null || !scripts.Any())
+                return null;
+
+            var executeResult = new List<ExecuteResult>();
+
             foreach (var script in scripts) {
-                Execute(script.ScriptText);
+                executeResult.Add(
+                    Execute(script.ScriptText) ?
+                       new ExecuteResult(script.ScriptName, true, script.UserMessage)
+                           : new ExecuteResult(script.ScriptName, false, $"Failed to execute {script.ScriptName}"));
+
                 _serverDbManager.Delete(script);
             }
+
+            return executeResult;
         }
 
         public void ExecuteScripts(string scriptsPath) {
@@ -49,14 +60,18 @@ namespace CloudScriptApplier.Db.ClientDb
             }
         }
 
-        private void Execute(string command) {
+        private bool Execute(string command) {
             try {
                 ExecuteCommand(command);
+
+                return true;
             }
             catch (Exception e) {
                 _serverDbManager.LogMessage(e.Message, logHistoryType.Error, command,
                     Environment.MachineName,
                     GetCurrentDbName());
+
+                return false;
             }
         }
 

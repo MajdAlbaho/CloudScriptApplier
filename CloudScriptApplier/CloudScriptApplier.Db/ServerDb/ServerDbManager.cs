@@ -49,7 +49,9 @@ namespace CloudScriptApplier.Db.ServerDb
                     Id = e.Id,
                     DatabaseId = e.DatabaseId,
                     CreatedDate = e.CreatedDate,
-                    ScriptText = e.ScriptText
+                    ScriptText = e.ScriptText,
+                    ScriptName = e.ScriptName,
+                    UserMessage = e.UserMessage
                 }).OrderBy(s => s.CreatedDate).ToList();
             }
 

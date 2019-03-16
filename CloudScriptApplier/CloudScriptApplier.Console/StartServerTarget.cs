@@ -34,14 +34,18 @@ namespace CloudScriptApplier.Console
             try {
                 if (_internetConnectionManager.IsValidConnection()) {
                     string dbName = _clientDbManager.GetCurrentDbName();
+
                     // Insert db infromation on databases table if doesn't exist
                     _serverDbManager.RegisterDatabase(dbName);
 
                     // Get scripts from database ordered by created date
-                    // Merge all scripts with the parents ordered by created date
                     List<Scripts> scripts = _serverDbManager.GetScriptsByDbName(dbName);
 
-                    _clientDbManager.ExecuteScripts(scripts);
+                    var result = _clientDbManager.ExecuteScripts(scripts);
+
+                    foreach (var item in result) {
+                        System.Console.WriteLine(item.ScriptName + " : " + item.UserMessage);
+                    }
                 }
             }
             catch (Exception e) {
