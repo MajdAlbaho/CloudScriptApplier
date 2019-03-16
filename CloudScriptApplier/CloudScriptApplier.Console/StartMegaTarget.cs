@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace CloudScriptApplier.Console
 {
-    public class StartMegaTarget
+    public class StartMegaTarget : IStarter
     {
         private readonly IInternetConnectionManager _internetConnectionManager;
         private readonly IMegaClientManager _megaClientManager;

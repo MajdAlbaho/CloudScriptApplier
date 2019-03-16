@@ -17,8 +17,7 @@ namespace CloudScriptApplier.Console
             var kernal = new StandardKernel();
             kernal.Load(Assembly.GetExecutingAssembly());
 
-            //kernal.Get<StartMegaTarget>().Initialize();
-            kernal.Get<StartServerTarget>().Initialize();
+            kernal.Get<IStarter>().Initialize();
         }
     }
 }

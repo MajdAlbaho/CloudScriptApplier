@@ -15,6 +15,7 @@ namespace CloudScriptApplier.Console.Unity
             Bind<ISecurityManager>().To<SecurityManager>();
             Bind<IScriptManager>().To<ScriptManager>();
             Bind<IConnectionStringManager>().To<ConnectionStringManager>();
+            Bind<IStarter>().To<StartServerTarget>();
 
             var serverDbManagerInstance = Kernel.Get<ServerDbManager>();
             serverDbManagerInstance.Initialize();

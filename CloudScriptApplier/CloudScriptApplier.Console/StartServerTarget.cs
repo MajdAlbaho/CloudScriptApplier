@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CloudScriptApplier.Console
 {
-    public class StartServerTarget
+    public class StartServerTarget : IStarter
     {
         private readonly IInternetConnectionManager _internetConnectionManager;
         private readonly IMegaClientManager _megaClientManager;
