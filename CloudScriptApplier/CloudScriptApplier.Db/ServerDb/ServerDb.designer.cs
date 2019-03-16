@@ -22,7 +22,7 @@ namespace CloudScriptApplier.Db.ServerDb
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="master")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="ScriptApplierLog")]
 	public partial class ServerDbDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -30,13 +30,16 @@ namespace CloudScriptApplier.Db.ServerDb
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertLog(Log instance);
-    partial void UpdateLog(Log instance);
-    partial void DeleteLog(Log instance);
+    partial void InsertLogHistoryType(LogHistoryType instance);
+    partial void UpdateLogHistoryType(LogHistoryType instance);
+    partial void DeleteLogHistoryType(LogHistoryType instance);
+    partial void InsertLogHistory(LogHistory instance);
+    partial void UpdateLogHistory(LogHistory instance);
+    partial void DeleteLogHistory(LogHistory instance);
     #endregion
 		
 		public ServerDbDataContext() : 
-				base(global::CloudScriptApplier.Db.Properties.Settings.Default.masterConnectionString, mappingSource)
+				base(global::CloudScriptApplier.Db.Properties.Settings.Default.ScriptApplierLogConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
@@ -65,28 +68,36 @@ namespace CloudScriptApplier.Db.ServerDb
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<Log> Logs
+		public System.Data.Linq.Table<LogHistoryType> LogHistoryTypes
 		{
 			get
 			{
-				return this.GetTable<Log>();
+				return this.GetTable<LogHistoryType>();
+			}
+		}
+		
+		public System.Data.Linq.Table<LogHistory> LogHistories
+		{
+			get
+			{
+				return this.GetTable<LogHistory>();
 			}
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Logs")]
-	public partial class Log : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.LogHistoryType")]
+	public partial class LogHistoryType : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
 		private int _Id;
 		
-		private string _Result;
+		private string _EnName;
 		
-		private string _Script;
+		private string _ArName;
 		
-		private string _ServerName;
+		private EntitySet<LogHistory> _LogHistories;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -94,16 +105,15 @@ namespace CloudScriptApplier.Db.ServerDb
     partial void OnCreated();
     partial void OnIdChanging(int value);
     partial void OnIdChanged();
-    partial void OnResultChanging(string value);
-    partial void OnResultChanged();
-    partial void OnScriptChanging(string value);
-    partial void OnScriptChanged();
-    partial void OnServerNameChanging(string value);
-    partial void OnServerNameChanged();
+    partial void OnEnNameChanging(string value);
+    partial void OnEnNameChanged();
+    partial void OnArNameChanging(string value);
+    partial void OnArNameChanged();
     #endregion
 		
-		public Log()
+		public LogHistoryType()
 		{
+			this._LogHistories = new EntitySet<LogHistory>(new Action<LogHistory>(this.attach_LogHistories), new Action<LogHistory>(this.detach_LogHistories));
 			OnCreated();
 		}
 		
@@ -127,27 +137,201 @@ namespace CloudScriptApplier.Db.ServerDb
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Result", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Result
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EnName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string EnName
 		{
 			get
 			{
-				return this._Result;
+				return this._EnName;
 			}
 			set
 			{
-				if ((this._Result != value))
+				if ((this._EnName != value))
 				{
-					this.OnResultChanging(value);
+					this.OnEnNameChanging(value);
 					this.SendPropertyChanging();
-					this._Result = value;
-					this.SendPropertyChanged("Result");
-					this.OnResultChanged();
+					this._EnName = value;
+					this.SendPropertyChanged("EnName");
+					this.OnEnNameChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Script", DbType="NVarChar(MAX)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ArName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string ArName
+		{
+			get
+			{
+				return this._ArName;
+			}
+			set
+			{
+				if ((this._ArName != value))
+				{
+					this.OnArNameChanging(value);
+					this.SendPropertyChanging();
+					this._ArName = value;
+					this.SendPropertyChanged("ArName");
+					this.OnArNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LogHistoryType_LogHistory", Storage="_LogHistories", ThisKey="Id", OtherKey="LogHistoryTypeId")]
+		public EntitySet<LogHistory> LogHistories
+		{
+			get
+			{
+				return this._LogHistories;
+			}
+			set
+			{
+				this._LogHistories.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_LogHistories(LogHistory entity)
+		{
+			this.SendPropertyChanging();
+			entity.LogHistoryType = this;
+		}
+		
+		private void detach_LogHistories(LogHistory entity)
+		{
+			this.SendPropertyChanging();
+			entity.LogHistoryType = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.LogHistory")]
+	public partial class LogHistory : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _Id;
+		
+		private string _LogMessage;
+		
+		private int _LogHistoryTypeId;
+		
+		private string _Script;
+		
+		private string _ServerName;
+		
+		private string _DbName;
+		
+		private EntityRef<LogHistoryType> _LogHistoryType;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(System.Guid value);
+    partial void OnIdChanged();
+    partial void OnLogMessageChanging(string value);
+    partial void OnLogMessageChanged();
+    partial void OnLogHistoryTypeIdChanging(int value);
+    partial void OnLogHistoryTypeIdChanged();
+    partial void OnScriptChanging(string value);
+    partial void OnScriptChanged();
+    partial void OnServerNameChanging(string value);
+    partial void OnServerNameChanged();
+    partial void OnDbNameChanging(string value);
+    partial void OnDbNameChanged();
+    #endregion
+		
+		public LogHistory()
+		{
+			this._LogHistoryType = default(EntityRef<LogHistoryType>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true, IsDbGenerated=true)]
+		public System.Guid Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogMessage", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string LogMessage
+		{
+			get
+			{
+				return this._LogMessage;
+			}
+			set
+			{
+				if ((this._LogMessage != value))
+				{
+					this.OnLogMessageChanging(value);
+					this.SendPropertyChanging();
+					this._LogMessage = value;
+					this.SendPropertyChanged("LogMessage");
+					this.OnLogMessageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogHistoryTypeId", DbType="Int NOT NULL")]
+		public int LogHistoryTypeId
+		{
+			get
+			{
+				return this._LogHistoryTypeId;
+			}
+			set
+			{
+				if ((this._LogHistoryTypeId != value))
+				{
+					if (this._LogHistoryType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnLogHistoryTypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._LogHistoryTypeId = value;
+					this.SendPropertyChanged("LogHistoryTypeId");
+					this.OnLogHistoryTypeIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Script", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
 		public string Script
 		{
 			get
@@ -167,7 +351,7 @@ namespace CloudScriptApplier.Db.ServerDb
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ServerName", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ServerName", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
 		public string ServerName
 		{
 			get
@@ -183,6 +367,60 @@ namespace CloudScriptApplier.Db.ServerDb
 					this._ServerName = value;
 					this.SendPropertyChanged("ServerName");
 					this.OnServerNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DbName", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
+		public string DbName
+		{
+			get
+			{
+				return this._DbName;
+			}
+			set
+			{
+				if ((this._DbName != value))
+				{
+					this.OnDbNameChanging(value);
+					this.SendPropertyChanging();
+					this._DbName = value;
+					this.SendPropertyChanged("DbName");
+					this.OnDbNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LogHistoryType_LogHistory", Storage="_LogHistoryType", ThisKey="LogHistoryTypeId", OtherKey="Id", IsForeignKey=true)]
+		public LogHistoryType LogHistoryType
+		{
+			get
+			{
+				return this._LogHistoryType.Entity;
+			}
+			set
+			{
+				LogHistoryType previousValue = this._LogHistoryType.Entity;
+				if (((previousValue != value) 
+							|| (this._LogHistoryType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._LogHistoryType.Entity = null;
+						previousValue.LogHistories.Remove(this);
+					}
+					this._LogHistoryType.Entity = value;
+					if ((value != null))
+					{
+						value.LogHistories.Add(this);
+						this._LogHistoryTypeId = value.Id;
+					}
+					else
+					{
+						this._LogHistoryTypeId = default(int);
+					}
+					this.SendPropertyChanged("LogHistoryType");
 				}
 			}
 		}

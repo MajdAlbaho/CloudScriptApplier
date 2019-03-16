@@ -2,11 +2,24 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="ServerDb">
   <DataContextMoniker Name="/ServerDbDataContext" />
   <nestedChildShapes>
-    <classShape Id="89c86055-be52-4d37-b748-ee6cad8c0e54" absoluteBounds="5.625, 2.125, 2, 1.5785953776041666">
-      <DataClassMoniker Name="/ServerDbDataContext/Log" />
+    <classShape Id="b289d643-1605-4a8a-935a-05d0e528c9ad" absoluteBounds="0.75, 1.25, 2, 1.3862939453125">
+      <DataClassMoniker Name="/ServerDbDataContext/LogHistoryType" />
       <nestedChildShapes>
-        <elementListCompartment Id="2d14130a-4432-41cf-9264-5e3151df7381" absoluteBounds="5.64, 2.585, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="14ad2e14-3ec3-4f1f-a597-fb285e87f014" absoluteBounds="0.765, 1.71, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
+    <classShape Id="ec34edce-3572-48b5-8657-f02af109f0d9" absoluteBounds="3.5, 0.875, 2, 1.9631982421875">
+      <DataClassMoniker Name="/ServerDbDataContext/LogHistory" />
+      <nestedChildShapes>
+        <elementListCompartment Id="f131b708-c0b6-4170-a9ba-9b6c0d5f66b8" absoluteBounds="3.515, 1.335, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.75 : 1.94314697265625); (3.5 : 1.94314697265625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/ServerDbDataContext/LogHistoryType/LogHistoryType_LogHistory" />
+      <nodes>
+        <classShapeMoniker Id="b289d643-1605-4a8a-935a-05d0e528c9ad" />
+        <classShapeMoniker Id="ec34edce-3572-48b5-8657-f02af109f0d9" />
+      </nodes>
+    </associationConnector>
   </nestedChildShapes>
 </ordesignerObjectsDiagram>

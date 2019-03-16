@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CloudScriptApplier.Common.Services;
-using CloudScriptApplier.Db;
-using CloudScriptApplier.Db.Logger;
+﻿using CloudScriptApplier.Common.Services;
+using CloudScriptApplier.Db.ClientDb;
+using CloudScriptApplier.Db.ServerDb;
 using CloudScriptApplier.MegaCloud;
 using Ninject;
 using Ninject.Modules;
@@ -15,16 +10,20 @@ namespace CloudScriptApplier.Console.Unity
     public class BootStrap : NinjectModule
     {
         public override void Load() {
-            Bind<IMegaClientManager>().ToConstant(new MegaClientManager());
+            Bind<IMegaClientManager>().ToConstant(Kernel.Get<MegaClientManager>());
             Bind<IInternetConnectionManager>().To<InternetConnectionManager>();
             Bind<ISecurityManager>().To<SecurityManager>();
             Bind<IScriptManager>().To<ScriptManager>();
-            Bind<ILoggerService>().To<LoggerService>();
+            Bind<IConnectionStringManager>().To<ConnectionStringManager>();
 
-            var dbManagerInstance = Kernel.Get<DbManager>();
-            dbManagerInstance.Initialize();
+            var serverDbManagerInstance = Kernel.Get<ServerDbManager>();
+            serverDbManagerInstance.Initialize();
+            Bind<IServerDbManager>().ToConstant(serverDbManagerInstance);
 
-            Bind<IDbManager>().ToConstant(dbManagerInstance);
+
+            var clientDbManagerInstance = Kernel.Get<ClientDbManager>();
+            clientDbManagerInstance.Initialize();
+            Bind<IClientDbManager>().ToConstant(clientDbManagerInstance);
 
         }
     }

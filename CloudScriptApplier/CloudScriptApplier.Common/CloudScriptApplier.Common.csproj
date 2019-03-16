@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="Global.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ConnectionStringManager.cs" />
+    <Compile Include="Services\IConnectionStringManager.cs" />
     <Compile Include="Services\IInternetConnectionManager.cs" />
     <Compile Include="Services\InternetConnectionManager.cs" />
     <Compile Include="Services\IScriptManager.cs" />

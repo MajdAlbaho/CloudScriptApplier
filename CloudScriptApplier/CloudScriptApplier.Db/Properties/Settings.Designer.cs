@@ -32,5 +32,16 @@ namespace CloudScriptApplier.Db.Properties {
                 return ((string)(this["masterConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=home-pc;Initial Catalog=ScriptApplierLog;User ID=sa;Password=P@ssw0rd" +
+            "@123")]
+        public string ScriptApplierLogConnectionString {
+            get {
+                return ((string)(this["ScriptApplierLogConnectionString"]));
+            }
+        }
     }
 }

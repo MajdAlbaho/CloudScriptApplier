@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CloudScriptApplier.Db
+namespace CloudScriptApplier.Db.ClientDb
 {
-    public interface IDbManager
+    public interface IClientDbManager
     {
         void ExecuteScripts(string scriptPath);
         List<string> GetDbsCodes();
