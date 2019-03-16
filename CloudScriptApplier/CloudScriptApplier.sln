@@ -17,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{64A088F1-DCF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudScriptApplier.Common", "CloudScriptApplier.Common\CloudScriptApplier.Common.csproj", "{0F671E9E-FBB2-4407-A32F-24296B15133D}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "ServerDatabase", "ServerDatabase\ServerDatabase.sqlproj", "{6EDCEB60-2381-4AAB-B5AC-D19A12C2A041}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{AFAA6D75-2A04-41FE-9524-A842B7F2C997}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,12 @@ Global
 		{0F671E9E-FBB2-4407-A32F-24296B15133D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F671E9E-FBB2-4407-A32F-24296B15133D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F671E9E-FBB2-4407-A32F-24296B15133D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EDCEB60-2381-4AAB-B5AC-D19A12C2A041}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EDCEB60-2381-4AAB-B5AC-D19A12C2A041}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EDCEB60-2381-4AAB-B5AC-D19A12C2A041}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{6EDCEB60-2381-4AAB-B5AC-D19A12C2A041}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EDCEB60-2381-4AAB-B5AC-D19A12C2A041}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EDCEB60-2381-4AAB-B5AC-D19A12C2A041}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +58,7 @@ Global
 		{F2AF8B66-5E26-4CCB-ABEE-8EF45229668C} = {41D339C5-6352-4BCE-BA83-0BA890955FF7}
 		{38695EA0-2FD4-4A14-A66F-CF8E0FF8E44C} = {048FD6F4-BD73-4CB9-929B-05A1147A15FE}
 		{0F671E9E-FBB2-4407-A32F-24296B15133D} = {64A088F1-DCF7-4E76-BE8D-FF3CD9B1378C}
+		{6EDCEB60-2381-4AAB-B5AC-D19A12C2A041} = {AFAA6D75-2A04-41FE-9524-A842B7F2C997}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F6367160-D960-4B20-8839-D7DDF35C6B4E}
