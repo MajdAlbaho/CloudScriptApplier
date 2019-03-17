@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CloudScriptApplier.Db.ServerDb
 {
-    public interface IServerDbManager
+    public interface IServerDbManager : IDbManager
     {
         bool LogMessage(string Message, logHistoryType logHistoryType, string script, string serverName, string dbName);
 

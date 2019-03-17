@@ -8,10 +8,11 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>CloudScriptApplier.Console</RootNamespace>
     <AssemblyName>CloudScriptApplier.Console</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -79,7 +80,7 @@
       <Name>CloudScriptApplier.Db</Name>
     </ProjectReference>
     <ProjectReference Include="..\CloudScriptApplier.MegaCloud\CloudScriptApplier.MegaCloud.csproj">
-      <Project>{F2AF8B66-5E26-4CCB-ABEE-8EF45229668C}</Project>
+      <Project>{f2af8b66-5e26-4ccb-abee-8ef45229668c}</Project>
       <Name>CloudScriptApplier.MegaCloud</Name>
     </ProjectReference>
   </ItemGroup>

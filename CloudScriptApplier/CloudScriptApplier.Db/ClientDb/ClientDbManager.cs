@@ -25,12 +25,13 @@ namespace CloudScriptApplier.Db.ClientDb
             _connectionStringManager = connectionStringManager;
         }
 
-        public void Initialize() {
+        public void Initialize(string serverName, string dbName, string userName, string password) {
             //Connection.ConnectionString =
             //    _connectionStringManager.CreateDynamicConnectionString();
 
             Connection.ConnectionString =
-                _connectionStringManager.CreateStaticConnectionString("Home-PC", "HIS.Dev", "sa", "P@ssw0rd@123");
+                _connectionStringManager.CreateStaticConnectionString(serverName,
+                    dbName, userName, password);
         }
 
         public List<ExecuteResult> ExecuteScripts(List<Scripts> scripts) {

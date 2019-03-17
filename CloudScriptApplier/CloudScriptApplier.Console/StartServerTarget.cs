@@ -3,7 +3,6 @@ using CloudScriptApplier.Common.Models;
 using CloudScriptApplier.Common.Services;
 using CloudScriptApplier.Db.ClientDb;
 using CloudScriptApplier.Db.ServerDb;
-using CloudScriptApplier.MegaCloud;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,16 +14,14 @@ namespace CloudScriptApplier.Console
     public class StartServerTarget : IStarter
     {
         private readonly IInternetConnectionManager _internetConnectionManager;
-        private readonly IMegaClientManager _megaClientManager;
         private readonly IClientDbManager _clientDbManager;
         private readonly IServerDbManager _serverDbManager;
         private readonly IConnectionStringManager _connectionStringManager;
 
         public StartServerTarget(IInternetConnectionManager internetConnectionManager,
-                IMegaClientManager megaClientManager, IClientDbManager clientDbManager,
+            IClientDbManager clientDbManager,
                 IServerDbManager serverDbManager, IConnectionStringManager connectionStringManager) {
             _internetConnectionManager = internetConnectionManager;
-            _megaClientManager = megaClientManager;
             _clientDbManager = clientDbManager;
             _serverDbManager = serverDbManager;
             _connectionStringManager = connectionStringManager;

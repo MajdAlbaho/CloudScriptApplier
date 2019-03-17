@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CloudScriptApplier.Db.ClientDb
 {
-    public interface IClientDbManager
+    public interface IClientDbManager : IDbManager
     {
         void ExecuteScripts(string scriptPath);
         List<string> GetDbsNames();

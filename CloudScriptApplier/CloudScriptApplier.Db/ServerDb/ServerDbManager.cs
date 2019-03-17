@@ -17,9 +17,10 @@ namespace CloudScriptApplier.Db.ServerDb
             _connectionStringManager = connectionStringManager;
         }
 
-        public void Initialize() {
-            Connection.ConnectionString = _connectionStringManager.CreateStaticConnectionString(
-                "Home-PC", "ScriptApplierLog", "sa", "P@ssw0rd@123");
+        public void Initialize(string serverName, string dbName, string userName, string password) {
+            Connection.ConnectionString =
+                _connectionStringManager.CreateStaticConnectionString(serverName,
+                    dbName, userName, password);
         }
 
         public bool LogMessage(string Message, logHistoryType logHistoryType, string script, string serverName, string dbName) {
