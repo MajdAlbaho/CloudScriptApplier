@@ -22,7 +22,7 @@ namespace CloudScriptApplier.Db.ServerDb
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="ScriptApplierLog")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="CloudScriptApplier")]
 	public partial class ServerDbDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -48,7 +48,7 @@ namespace CloudScriptApplier.Db.ServerDb
     #endregion
 		
 		public ServerDbDataContext() : 
-				base(global::CloudScriptApplier.Db.Properties.Settings.Default.ScriptApplierLogConnectionString, mappingSource)
+				base(global::CloudScriptApplier.Db.Properties.Settings.Default.CloudScriptApplierConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
@@ -114,6 +114,14 @@ namespace CloudScriptApplier.Db.ServerDb
 			get
 			{
 				return this.GetTable<Script>();
+			}
+		}
+		
+		public System.Data.Linq.Table<GetRegisteredDatabase> GetRegisteredDatabases
+		{
+			get
+			{
+				return this.GetTable<GetRegisteredDatabase>();
 			}
 		}
 	}
@@ -1015,6 +1023,51 @@ namespace CloudScriptApplier.Db.ServerDb
 			if ((this.PropertyChanged != null))
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.GetRegisteredDatabases")]
+	public partial class GetRegisteredDatabase
+	{
+		
+		private string _DatabaseName;
+		
+		private string _TypeName;
+		
+		public GetRegisteredDatabase()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DatabaseName", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
+		public string DatabaseName
+		{
+			get
+			{
+				return this._DatabaseName;
+			}
+			set
+			{
+				if ((this._DatabaseName != value))
+				{
+					this._DatabaseName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string TypeName
+		{
+			get
+			{
+				return this._TypeName;
+			}
+			set
+			{
+				if ((this._TypeName != value))
+				{
+					this._TypeName = value;
+				}
 			}
 		}
 	}

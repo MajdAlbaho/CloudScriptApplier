@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{FD
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "ServerDatabase", "ServerDatabase\ServerDatabase.sqlproj", "{6EDCEB60-2381-4AAB-B5AC-D19A12C2A041}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudScriptApplier.Manager", "CloudScriptApplier.Manager\CloudScriptApplier.Manager.csproj", "{B7A3382D-EB27-4DE6-B234-44B203A08FE7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{6EDCEB60-2381-4AAB-B5AC-D19A12C2A041}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EDCEB60-2381-4AAB-B5AC-D19A12C2A041}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6EDCEB60-2381-4AAB-B5AC-D19A12C2A041}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{B7A3382D-EB27-4DE6-B234-44B203A08FE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7A3382D-EB27-4DE6-B234-44B203A08FE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7A3382D-EB27-4DE6-B234-44B203A08FE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7A3382D-EB27-4DE6-B234-44B203A08FE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,6 +65,7 @@ Global
 		{38695EA0-2FD4-4A14-A66F-CF8E0FF8E44C} = {048FD6F4-BD73-4CB9-929B-05A1147A15FE}
 		{0F671E9E-FBB2-4407-A32F-24296B15133D} = {64A088F1-DCF7-4E76-BE8D-FF3CD9B1378C}
 		{6EDCEB60-2381-4AAB-B5AC-D19A12C2A041} = {FD1C2204-7DD6-4CB3-8F77-4EDBC1F17F16}
+		{B7A3382D-EB27-4DE6-B234-44B203A08FE7} = {41D339C5-6352-4BCE-BA83-0BA890955FF7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F6367160-D960-4B20-8839-D7DDF35C6B4E}

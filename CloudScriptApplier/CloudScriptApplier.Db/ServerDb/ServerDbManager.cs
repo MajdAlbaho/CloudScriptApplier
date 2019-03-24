@@ -13,19 +13,24 @@ namespace CloudScriptApplier.Db.ServerDb
     {
         private readonly IConnectionStringManager _connectionStringManager;
 
-        public ServerDbManager(IConnectionStringManager connectionStringManager) {
+        public ServerDbManager(IConnectionStringManager connectionStringManager)
+        {
             _connectionStringManager = connectionStringManager;
         }
 
-        public void Initialize(string serverName, string dbName, string userName, string password) {
+        public void Initialize(string serverName, string dbName, string userName, string password)
+        {
             Connection.ConnectionString =
                 _connectionStringManager.CreateStaticConnectionString(serverName,
                     dbName, userName, password);
         }
 
-        public bool LogMessage(string Message, logHistoryType logHistoryType, string script, string serverName, string dbName) {
-            try {
-                LogHistories.InsertOnSubmit(new LogHistory() {
+        public bool LogMessage(string Message, logHistoryType logHistoryType, string script, string serverName, string dbName)
+        {
+            try
+            {
+                LogHistories.InsertOnSubmit(new LogHistory()
+                {
                     LogMessage = Message,
                     LogHistoryTypeId = (int)logHistoryType,
                     Script = script,
@@ -36,17 +41,21 @@ namespace CloudScriptApplier.Db.ServerDb
                 SubmitChanges();
                 return true;
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 // TODO: Log error to other place
                 return false;
             }
         }
 
-        public List<Scripts> GetScriptsByDbName(string dbName) {
+        public List<Scripts> GetScriptsByDbName(string dbName)
+        {
             var Db = Databases.FirstOrDefault(db => db.DatabaseName == dbName);
 
-            if (Db != null) {
-                return Scripts.Where(e => e.DatabaseId == Db.Id).Select(e => new Scripts() {
+            if (Db != null)
+            {
+                return Scripts.Where(e => e.DatabaseId == Db.Id).Select(e => new Scripts()
+                {
                     Id = e.Id,
                     DatabaseId = e.DatabaseId,
                     CreatedDate = e.CreatedDate,
@@ -59,9 +68,12 @@ namespace CloudScriptApplier.Db.ServerDb
             return null;
         }
 
-        public void RegisterDatabase(string dbName) {
-            if (!Databases.Any(e => e.DatabaseName == dbName)) {
-                Databases.InsertOnSubmit(new Database() {
+        public void RegisterDatabase(string dbName)
+        {
+            if (!Databases.Any(e => e.DatabaseName == dbName))
+            {
+                Databases.InsertOnSubmit(new Database()
+                {
                     DatabaseName = dbName,
                     DatabaseCode = dbName,
                     DatabaseTypeId = dbName.Contains("HIS") ? (int)DatabaseTypes.HIS
@@ -73,8 +85,19 @@ namespace CloudScriptApplier.Db.ServerDb
             }
         }
 
-        public void Delete(Scripts script) {
-            try {
+        public List<GetRegisteredDatabase> GetRegisteredDBS(string dbName = null)
+        {
+            if (dbName == null)
+                return GetRegisteredDatabases.ToList();
+
+            return GetRegisteredDatabases
+                        .Where(item => item.DatabaseName.Contains(dbName)).ToList();
+        }
+
+        public void Delete(Scripts script)
+        {
+            try
+            {
                 var dbItem = Scripts.FirstOrDefault(e => e.Id == script.Id);
                 if (dbItem == null)
                     throw new NullReferenceException($"Couldn't find any script with code {script.Id}");
@@ -83,7 +106,8 @@ namespace CloudScriptApplier.Db.ServerDb
                 Scripts.DeleteOnSubmit(dbItem);
                 SubmitChanges();
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 LogMessage(e.Message, logHistoryType.Error, "", Environment.MachineName, "");
             }
         }
