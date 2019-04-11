@@ -35,7 +35,7 @@ namespace CloudScriptApplier.Manager
             Bind<IConnectionStringManager>().To<ConnectionStringManager>();
 
             var serverDbManagerInstance = Kernel.Get<ServerDbManager>();
-            serverDbManagerInstance.Initialize("Majd-pc", "CloudScriptApplier",
+            serverDbManagerInstance.Initialize("172.16.11.27", "CloudScriptApplier",
                 "edward", "12345");
             Bind<IServerDbManager>().ToConstant(serverDbManagerInstance);
         }
