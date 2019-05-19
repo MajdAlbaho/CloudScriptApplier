@@ -17,9 +17,9 @@
                                  Width="600"
                                  Height="25"
                                  Name="SearchDB"></TextBox>
-                        <Button Width="90"
+                        <Button Width="120"
                                 Height="25"
-                                Click="Search_Click">Search</Button>
+                                Click="Search_Registed_DB">Search Registed DB</Button>
                     </StackPanel>
                     <DockPanel DockPanel.Dock="Top">
                         <DataGrid Name="DBView" AutoGenerateColumns="False" IsReadOnly="True">
@@ -35,12 +35,96 @@
                 
             </TabItem>
             
-            <TabItem Header="Logs">
-                
+            <TabItem Header="Logs" Loaded="Log_Loaded">
+
+                <DockPanel>
+                    <StackPanel Orientation="Horizontal"
+                                DockPanel.Dock="Top">
+                        <TextBox Text="Search Logs"
+                                 Width="600"
+                                 Height="25"
+                                 Name="SearchLogs"></TextBox>
+                        <Button Width="120"
+                                Height="25"
+                                Click="Search_Logs">Search Logs</Button>
+                    </StackPanel>
+                    <DockPanel DockPanel.Dock="Top">
+                        <DataGrid Name="LogsView"
+                                  AutoGenerateColumns="False"
+                                  IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Logs MSG"
+                                                    Binding="{Binding LogMessage}"></DataGridTextColumn>
+                                <DataGridTextColumn Header="Logs Script"
+                                                    Binding="{Binding Script}"></DataGridTextColumn>
+                                <DataGridTextColumn Header="Server Name"
+                                                    Binding="{Binding ServerName}"></DataGridTextColumn>
+                                <DataGridTextColumn Header="DB Name"
+                                                    Binding="{Binding DbName}"></DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </DockPanel>
+
             </TabItem>
             
             <TabItem Header="Scripts">
                 
+            </TabItem>
+
+            <TabItem Header="Setting">
+
+                <DockPanel>
+                    <StackPanel>
+                        <Grid DockPanel.Dock="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120" />
+                                <ColumnDefinition Width="200" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock>Server Name / IP</TextBlock>
+                            <TextBox Grid.Column="1"
+                                     Name="SrvNm"></TextBox>
+                        </Grid>
+
+                        <Grid DockPanel.Dock="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120" />
+                                <ColumnDefinition Width="200" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock>DataBase Name</TextBlock>
+                            <TextBox Grid.Column="1"
+                                     Name="DBNm"></TextBox>
+                        </Grid>
+
+                        <Grid DockPanel.Dock="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120" />
+                                <ColumnDefinition Width="200" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock>UserName</TextBlock>
+                            <TextBox Grid.Column="1"
+                                     Name="UsrNm"></TextBox>
+                        </Grid>
+
+                        <Grid DockPanel.Dock="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120" />
+                                <ColumnDefinition Width="200" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock>Password</TextBlock>
+                            <TextBox Grid.Column="1"
+                                     Name="UsrPass"></TextBox>
+                        </Grid>
+
+                        <Button Name="okkk"
+                                Width="120"
+                                Height="40"
+                                Margin="5"
+                                Click="Okkk_Click">ok</Button>
+                    </StackPanel>
+
+                </DockPanel>
+
             </TabItem>
 
         </TabControl>

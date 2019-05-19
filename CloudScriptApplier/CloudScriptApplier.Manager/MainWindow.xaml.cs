@@ -39,12 +39,32 @@ namespace CloudScriptApplier.Manager
 
         StandardKernel kernal = new StandardKernel();
 
-        private void Search_Click(object sender, RoutedEventArgs e)
+        private void Search_Registed_DB(object sender, RoutedEventArgs e)
         {
 
             var dbManager2 = kernal.Get<IServerDbManager>();
 
             DBView.ItemsSource = dbManager2.GetRegisteredDBS(SearchDB.Text);
+
+        }
+
+
+        private void Search_Logs(object sender, RoutedEventArgs e)
+        {
+
+            var dbManagerLogs = kernal.Get<IServerDbManager>();
+
+            LogsView.ItemsSource = dbManagerLogs.GetLogsHistory();
+
+        }
+
+        private void Log_Loaded(object sender, RoutedEventArgs e)
+        {
+            Search_Logs(null,null);
+        }
+
+        private void Okkk_Click(object sender, RoutedEventArgs e)
+        {
 
         }
     }

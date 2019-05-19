@@ -111,5 +111,11 @@ namespace CloudScriptApplier.Db.ServerDb
                 LogMessage(e.Message, logHistoryType.Error, "", Environment.MachineName, "");
             }
         }
+
+        public List<LogHistory> GetLogsHistory()
+        {
+            var Items = LogHistories.ToList();
+            return Items;
+        }
     }
 }

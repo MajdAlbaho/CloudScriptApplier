@@ -16,6 +16,7 @@ namespace CloudScriptApplier.Db.ServerDb
         void RegisterDatabase(string dbName);
         void Delete(Scripts script);
         List<GetRegisteredDatabase> GetRegisteredDBS(string dbName = null);
+        List<LogHistory> GetLogsHistory();
     }
 
     public enum logHistoryType
